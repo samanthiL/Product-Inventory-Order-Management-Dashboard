@@ -1,0 +1,92 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Mechanical Keyboard Pro",
+      "description": "Premium tactile keyboard with RGB lighting.",
+      "price": 129.99,
+      "category": "Electronics",
+      "stock": 45,
+      "isActive": true,
+      "imageUrl": "https://via.placeholder.com/150?text=Keyboard",
+      "ratings": 4.5
+    },
+    {
+      "id": 2,
+      "name": "Ergonomic Office Chair",
+      "description": "High-back chair with adjustable lumbar support.",
+      "price": 350.00,
+      "category": "Furniture",
+      "stock": 8,
+      "isActive": true,
+      "imageUrl": "https://via.placeholder.com/150?text=Chair",
+      "ratings": 4.1
+    },
+    {
+      "id": 3,
+      "name": "4K Ultra HD Monitor",
+      "description": "27-inch display for graphics professionals.",
+      "price": 499.00,
+      "category": "Electronics",
+      "stock": 0,
+      "isActive": false,
+      "imageUrl": "https://via.placeholder.com/150?text=Monitor",
+      "ratings": 4.8
+    },
+     {
+      "id": 4,
+      "name": "4K Ultra HD Monitor",
+      "description": "27-inch display for graphics professionals.",
+      "price": 499.00,
+      "category": "Electronics",
+      "stock": 0,
+      "isActive": false,
+      "imageUrl": "https://via.placeholder.com/150?text=Monitor",
+      "ratings": 4.8
+    },
+     {
+      "id": 5,
+      "name": "4K Ultra HD Monitor",
+      "description": "27-inch display for graphics professionals.",
+      "price": 499.00,
+      "category": "Electronics",
+      "stock": 0,
+      "isActive": false,
+      "imageUrl": "https://via.placeholder.com/150?text=Monitor",
+      "ratings": 4.8
+    }, {
+      "id": 6,
+      "name": "4K Ultra HD Monitor",
+      "description": "27-inch display for graphics professionals.",
+      "price": 499.00,
+      "category": "Electronics",
+      "stock": 0,
+      "isActive": false,
+      "imageUrl": "https://via.placeholder.com/150?text=Monitor",
+      "ratings": 4.8
+    }
+  ],
+  "orders": [
+    {
+      "id": 1001,
+      "orderDate": "2025-11-25",
+      "customerName": "Alice Smith",
+      "totalAmount": 129.99,
+      "status": "Delivered"
+    },
+    {
+      "id": 1002,
+      "orderDate": "2025-12-01",
+      "customerName": "Bob Johnson",
+      "totalAmount": 700.00,
+      "status": "Pending"
+    },
+    {
+      "id": 1003,
+      "orderDate": "2025-12-05",
+      "customerName": "Charlie Brown",
+      "totalAmount": 99.00,
+      "status": "Shipped"
+    }
+  ]
+}
