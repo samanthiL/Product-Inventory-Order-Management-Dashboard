@@ -8,7 +8,7 @@
       "price": 1299.99,
       "category": "Laptop",
       "stock": 19,
-      "isActive": true,
+      "isActive": false,
       "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed",
       "ratings": 4.7
     },
