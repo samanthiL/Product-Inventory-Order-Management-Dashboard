@@ -1,73 +1,43 @@
-# React + TypeScript + Vite
+Product Inventory & Order Management Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Project Overview
 
-Currently, two official plugins are available:
+This is a mid-scale React application built to serve as a Product Inventory and Order Management Dashboard. It implements a modern front-end stack using React, TypeScript, Redux Toolkit, and Material UI to demonstrate core concepts in state management, API integration, and scalable component architecture.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The application fulfills all core functional and technical requirements  outlined in the assessment
 
-## React Compiler
+Technical Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Framework: React and TypeScript.
+UI/Styling: Material UI (MUI) for component consistency and professional design.
+State Management: Redux Toolkit (RTK) with dedicated productSlice and orderSlice.
+API Integration: Axios and createAsyncThunk.
+Routing: React Router DOM.
 
-## Expanding the ESLint configuration
+ Core Features Implemented
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Product Management
+Product List Page: Displays product data using the MUI DataGrid. Features include client-side Pagination, multi-field Sorting, and advanced Search/Filtering.
+Product Details Page: Allows the administrator to view detailed product information (image, price, description, ratings).
+Updates: Enables modification of stock quantity and toggling the isActive status.
+Form Handling: Updates are persisted via an API PUT request managed by a Redux Thunk.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Order Management
+Order List Page: Displays order records in a fully customizable MUI Table.
+Functionality: Supports multi-column Sorting and dynamic Filtering (by status and general search).
+Reusability: Uses the reusable OrderStatusBadge component for clear status visualization.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+ Prerequisites
+Node.js (LTS recommended)
+npm or yarn
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Installation
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. Clone the repository:git clone 
+                      cd product
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. Install dependencies:npm install
+3. Start Mock API: Ensure your mock server (e.g., json-server) is running on http://localhost:3001 with the required /products and / orders endpoints in another command prompt.
+  npm run api
+4. Running the Application: npm run dev
+5. The application will launch at http://localhost:5173.
