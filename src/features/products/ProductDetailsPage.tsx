@@ -6,6 +6,7 @@ import {
   Switch,
   Typography,
   CircularProgress,
+  Snackbar
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../store";
@@ -31,7 +32,7 @@ const ProductDetailsPage = () => {
      stock: product?.stock ?? 0,
   isActive: product?.isActive ?? true,
   });
-
+const [snackbarMessage, setSnackbarMessage] = useState("");
   useEffect(() => {
     if (id) {
       dispatch(fetchProductById(id));
@@ -45,7 +46,10 @@ const ProductDetailsPage = () => {
     });
   };
     const [open, setOpen] = useState(false);
-
+        const [snackbarOpen, setSnackbarOpen] = useState(false);
+ const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  }
  const handleClickOpen = () => {
     setOpen(true);
   };
@@ -63,8 +67,11 @@ const ProductDetailsPage = () => {
     .unwrap()
     .then(() => {
       console.log("Product updated successfully!");
+   setSnackbarOpen(true)
+      setSnackbarMessage(`${product.name} updated successfully!`);
     })
     .catch((err) => {
+      setSnackbarMessage(`Error: ${err}`);
       console.error("Update failed:", err);
     });
 }
@@ -131,6 +138,14 @@ const ProductDetailsPage = () => {
         onConfirm={handleUpdate}
         description="Are you sure you want to update this product?"
       />
+      <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+            message={snackbarMessage}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+        </Snackbar>
       </Box>
   );
 };
