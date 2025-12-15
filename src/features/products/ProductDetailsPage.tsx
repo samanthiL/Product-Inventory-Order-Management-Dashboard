@@ -9,11 +9,11 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../store";
-import { fetchProductById } from "../../store/productSlice";
-
+import { fetchProductById, updateProductById } from "../../store/productSlice";
 import SpinnerField from "../../components/common/SpinnerField";
+import ProductCard from "../../components/shared/ProductCard";
+import ConfirmationDialog from "../../components/shared/ConfirmationDialog";
 
-// Define the shape of your editable form state
 interface FormStateType {
   stock: number;
   isActive: boolean;
@@ -23,43 +23,51 @@ const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
 
-  // Redux state
   const { selectedProduct: product, loading } = useSelector(
     (state: RootState) => state.products
   );
 
-  // Local form state initialized with sensible defaults
   const [formState, setFormState] = useState<FormStateType>({
-    stock: 0,
-    isActive: true,
+     stock: product?.stock ?? 0,
+  isActive: product?.isActive ?? true,
   });
 
-  // Fetch product on page load
   useEffect(() => {
     if (id) {
       dispatch(fetchProductById(id));
     }
   }, [dispatch, id]);
 
-  // Update handler for the Switch to update local state
   const handleIsActiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormState({
       ...formState,
       isActive: e.target.checked,
     });
   };
+    const [open, setOpen] = useState(false);
 
-  // Update handler (API thunk can be added later)
+ const handleClickOpen = () => {
+    setOpen(true);
+  };
   const handleUpdate = () => {
     if (!product) return;
 
-    console.log("Updated Data:", {
-      id: product.id,
-      ...formState, // Log data from local state
-    });
+   const updatedProduct = {
+    ...product,      
+    stock: formState.stock,
+    isActive: formState.isActive,
   };
 
-  // Loading UI
+  console.log("Updated Product Payload:", updatedProduct);
+   dispatch(updateProductById(updatedProduct))
+    .unwrap()
+    .then(() => {
+      console.log("Product updated successfully!");
+    })
+    .catch((err) => {
+      console.error("Update failed:", err);
+    });
+}
   if (loading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
@@ -74,68 +82,56 @@ const ProductDetailsPage = () => {
       stock: val,
     });
   };
-  // Safety check
   if (!product) return null;
 
+
   return (
-    <Box sx={{ maxWidth: 900, mx: "auto", mt: 4 }}>
-      <Box
-        sx={{
-          display: "flex",
-          gap: 4,
-          flexDirection: { xs: "column", md: "row" },
-        }}
-      >
-        {/* LEFT: Product Image */}
-        <Box sx={{ flex: 1 }}>
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            style={{
-              width: "100%",
-              maxHeight: 300,
-              objectFit: "contain",
-              borderRadius: 8,
-            }}
+    <Box sx={{ maxWidth: 900, mx: "auto", mt: 4, p: 2 }}>
+      <ProductCard
+        name={product.name}
+        imageUrl={product.imageUrl}
+        description={product.description}
+        price={product.price}
+        ratings={product.ratings || 0}
+        stock={product.stock}
+      />
+        <SpinnerField
+          label="Stock Quantity"
+          initialValue={product.stock} 
+          onChange={handleQuantityChange}
+        />
+        <Box sx={{ display: "flex", alignItems: "center", mt: 3, mb: 3 }}>
+          <Typography sx={{ mr: 2, fontWeight: "bold" }}>
+            Product Status:
+          </Typography>
+          <Switch
+            checked={formState.isActive}
+            onChange={handleIsActiveChange}
           />
+          <Typography
+            color={formState.isActive ? "success.main" : "error.main"}
+          >
+            {formState.isActive ? "Active" : "Inactive"}
+          </Typography>
         </Box>
 
-        {/* RIGHT: Product Details */}
-        <Box sx={{ flex: 2 }}>
-          <Typography variant="h5">{product.name}</Typography>
+        {/* Update Button */}
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2 }}
+          onClick={handleClickOpen}
+        >
+          Update Product
+        </Button>
 
-          <Typography sx={{ mt: 1 }}>{product.description}</Typography>
-
-          <Typography sx={{ mt: 2 }}>
-            <strong>Price:</strong> ${product.price}
-          </Typography>
-
-          <Typography sx={{ mt: 1 }}>
-            <strong>Ratings:</strong> {product.ratings}
-          </Typography>
-
-          {/* Stock Input */}
-          <SpinnerField
-            label="Products"
-            initialValue={1}
-            onChange={handleQuantityChange}
-          />
-          {/* Active Switch */}
-          <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-            <Typography sx={{ mr: 1 }}>Active</Typography>
-            <Switch
-              checked={formState.isActive}
-              onChange={handleIsActiveChange} 
-            />
-          </Box>
-
-          {/* Update Button */}
-          <Button variant="contained" sx={{ mt: 3 }} onClick={handleUpdate}>
-            Update Product
-          </Button>
-        </Box>
+         <ConfirmationDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        onConfirm={handleUpdate}
+        description="Are you sure you want to update this product?"
+      />
       </Box>
-    </Box>
   );
 };
 

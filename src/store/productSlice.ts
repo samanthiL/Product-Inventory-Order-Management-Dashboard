@@ -1,5 +1,9 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  getProducts,
+  getProductById,
+  updateProduct,
+} from "../services/productService";
 
 export interface Product {
   id: number;
@@ -17,40 +21,38 @@ interface ProductsState {
   list: Product[];
   loading: boolean;
   error: string | null;
-    selectedProduct: Product | null;
-
+  selectedProduct: Product | null;
 }
 
 const initialState: ProductsState = {
   list: [],
   loading: false,
   error: null,
-    selectedProduct: null,
-
+  selectedProduct: null,
 };
 
 export const fetchProducts = createAsyncThunk(
-  'products/fetchProducts',
+  "products/fetchProducts",
   async () => {
-    const res = await axios.get<Product[]>(
-      'http://localhost:3001/products'
-    );
-    return res.data;
+    return await getProducts();
   }
 );
 
 export const fetchProductById = createAsyncThunk(
-  'products/fetchProductById',
+  "products/fetchProductById",
   async (id: string) => {
-    const res = await axios.get(`http://localhost:3001/products/${id}`);
-    console.log("res.data",res.data    
-    )
-    return res.data;
+    return await getProductById(id);
+  }
+);
+export const updateProductById = createAsyncThunk(
+  "products/updateProductById",
+  async (updatedProduct: Product) => {
+    return await updateProduct(updatedProduct);
   }
 );
 
 const productsSlice = createSlice({
-  name: 'products',
+  name: "products",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -64,9 +66,9 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch products';
+        state.error = action.error.message || "Failed to fetch products";
       })
-            .addCase(fetchProductById.pending, (state) => {
+      .addCase(fetchProductById.pending, (state) => {
         state.loading = true;
         state.selectedProduct = null;
       })
@@ -76,9 +78,23 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProductById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch product';
+        state.error = action.error.message || "Failed to fetch product";
+      })
+      .addCase(updateProductById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateProductById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedProduct = action.payload;
+        const index = state.list.findIndex((p) => p.id === action.payload.id);
+        if (index >= 0) {
+          state.list[index] = action.payload;
+        }
+      })
+      .addCase(updateProductById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to update product";
       });
-
   },
 });
 

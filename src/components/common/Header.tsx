@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ drawerWidth,mode,handleChange}) => {
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-                    SSE Inventory Dashboard
+Product Inventory & Order Management Dashboard
                 </Typography>
                 
                 {/* Dark/Light Mode Toggle */}
