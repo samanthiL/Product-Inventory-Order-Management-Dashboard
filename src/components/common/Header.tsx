@@ -1,21 +1,17 @@
 // src/components/common/Header.tsx
 
 import React from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Switch, FormControlLabel } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Switch } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-// import { useAppDispatch } from '../../hooks/redux';
-// import { toggleDarkMode } from '../../store/uiSlice'; // Assuming this action exists
 
 interface HeaderProps {
     drawerWidth: number;
-    handleDrawerToggle: () => void;
+    handleChange: () => void;
+    mode:boolean
 }
 
-const Header: React.FC<HeaderProps> = ({ drawerWidth, handleDrawerToggle }) => {
-    // const isDarkMode = useAppSelector(state => state.ui.darkMode);
-
+const Header: React.FC<HeaderProps> = ({ drawerWidth,mode,handleChange}) => {
+ 
     return (
         <AppBar
             position="fixed"
@@ -29,7 +25,6 @@ const Header: React.FC<HeaderProps> = ({ drawerWidth, handleDrawerToggle }) => {
                     color="inherit"
                     aria-label="open drawer"
                     edge="start"
-                    onClick={handleDrawerToggle}
                     sx={{ mr: 2, display: { sm: 'none' } }} // Only show on mobile
                 >
                     <MenuIcon />
@@ -39,19 +34,11 @@ const Header: React.FC<HeaderProps> = ({ drawerWidth, handleDrawerToggle }) => {
                 </Typography>
                 
                 {/* Dark/Light Mode Toggle */}
-                <FormControlLabel
-                    control={
-                        <Switch
-                            // checked={isDarkMode}
-                            // onChange={() => dispatch(toggleDarkMode())}
-                            name="darkModeToggle"
-                            color="default"
-                            icon={<LightModeIcon sx={{ color: 'yellow' }} />}
-                            checkedIcon={<DarkModeIcon />}
-                        />
-                    }
-                    label="" // Empty label
-                />
+              <Switch
+              checked={mode}
+              onChange={handleChange}
+              inputProps={{'aria-label': 'controlled'}}
+              />
             </Toolbar>
         </AppBar>
     );

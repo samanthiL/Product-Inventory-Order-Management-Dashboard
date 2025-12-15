@@ -4,6 +4,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/common/Layout';
 import ProductListPage from './features/products/ProductListPage';
+import OrderListPage from './features/orders/OrderListPage';
+import ProductDetailsPage from './features/products/ProductDetailsPage';
+
+
 
 const App: React.FC = () => {
   return (
@@ -13,13 +17,11 @@ const App: React.FC = () => {
           {/* 1. Product Routes */}
           <Route path="/" element={<ProductListPage />} />
           <Route path="/products" element={<ProductListPage />} />
-          {/* <Route path="/products/:productId" element={<ProductDetailsPage />} /> */}
+      <Route path="/products/:id" element={<ProductDetailsPage />} />
           
           {/* 2. Order Routes */}
-          {/* <Route path="/orders" element={<OrderListPage />} /> */}
-          
-          {/* 3. Catch-all for 404 */}
-          <Route path="*" element={<p style={{ padding: 20 }}>404 - Page Not Found</p>} />
+          <Route path="/orders" element={<OrderListPage />} />
+                    <Route path="*" element={<p style={{ padding: 20 }}>404 - Page Not Found</p>} />
         </Routes>
       </Layout>
     </Router>

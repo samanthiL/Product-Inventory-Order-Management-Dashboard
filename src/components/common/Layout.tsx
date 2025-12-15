@@ -1,7 +1,7 @@
 // src/components/common/Layout.tsx
 
 import React, { useState } from 'react';
-import { Box, Toolbar, CssBaseline, ThemeProvider, createTheme, Paper } from '@mui/material';
+import { Box, Toolbar, CssBaseline, createTheme, Paper, ThemeProvider } from '@mui/material';
 import Header from './Header';
 import Sidebar from './Sidebar';
 // import { useAppSelector } from '../../hooks/redux'; // For dark mode toggle
@@ -14,8 +14,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  // Get dark mode state from Redux
-//   const isDarkMode = useAppSelector(state => state.ui.darkMode); 
+ const[mode,setMode]=useState(true)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -23,24 +22,32 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   // Create a dynamic MUI theme based on Redux state
   const theme = createTheme({
-    palette: {
-      mode:  'light',
-      primary: {
-        main: '#3f51b5',
-      },
-      secondary: {
-        main: '#f50057',
-      },
+  colorSchemes: {
+    dark: true,
+  },
+});
+  const darkTheme = createTheme({
+   palette: {
+      mode: mode ?'dark' : 'light',
     },
   });
+ 
+  const handleChange = ()=>{
+    if (mode) {
+        setMode(false)
+    }else{
+    setMode(true)
 
+    }
+  }
+  
   return (
-    <ThemeProvider theme={theme}>
+                <ThemeProvider theme={darkTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         
         {/* 1. Header (Top Navigation) */}
-        <Header drawerWidth={drawerWidth} handleDrawerToggle={handleDrawerToggle} />
+        <Header drawerWidth={drawerWidth} mode={mode} handleChange={handleChange}/>
         
         {/* 2. Sidebar (Left Navigation) */}
         <Sidebar 
@@ -68,7 +75,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </Paper>
         </Box>
       </Box>
-    </ThemeProvider>
+      </ThemeProvider>
   );
 };
 

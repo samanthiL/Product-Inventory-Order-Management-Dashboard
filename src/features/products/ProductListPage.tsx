@@ -1,19 +1,36 @@
-import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import type { GridColDef } from '@mui/x-data-grid';
-import { Box, TextField, CircularProgress  } from '@mui/material';
-import { useEffect, useState } from 'react';
-import type { RootState, AppDispatch } from '../../store';
-import { fetchProducts } from '../../store/productSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import * as React from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import type { GridColDef } from "@mui/x-data-grid";
+import { Box, TextField, CircularProgress } from "@mui/material";
+import { useEffect, useState } from "react";
+import type { RootState, AppDispatch } from "../../store";
+import { fetchProducts } from "../../store/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'name', headerName: 'Name', width: 200 },
-  { field: 'category', headerName: 'Category', width: 130 },
-  { field: 'price', headerName: 'Price ($)', width: 120 },
-  { field: 'stock', headerName: 'Stock', width: 100 },
- 
+  {
+    field: "imageUrl",
+    headerName: "image",
+    width: 170,
+    renderCell: (params) => (
+      <img
+        src={params.value}
+        alt="product"
+        style={{
+          width: 80,
+          height: 80,
+          objectFit: "cover",
+          borderRadius: 4,
+        }}
+      />
+    ),
+  },
+  { field: "id", headerName: "ID", width: 70 },
+  { field: "name", headerName: "Name", width: 200 },
+  { field: "category", headerName: "Category", width: 130 },
+  { field: "price", headerName: "Price ($)", width: 120 },
+  { field: "stock", headerName: "Stock", width: 100 },
 ];
 
 const ProductListPage = () => {
@@ -22,7 +39,8 @@ const ProductListPage = () => {
     (state: RootState) => state.products
   );
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -41,7 +59,7 @@ const ProductListPage = () => {
   }
 
   return (
-    <Box sx={{ height: 500, width: '100%' }}>
+    <Box sx={{ height: 500, width: "100%" }}>
       <TextField
         label="Search products"
         size="small"
@@ -55,6 +73,7 @@ const ProductListPage = () => {
         rows={filteredProducts}
         columns={columns}
         pageSizeOptions={[5]}
+        onRowClick={(params) => navigate(`/products/${params.id}`)}
         initialState={{
           pagination: { paginationModel: { pageSize: 5, page: 0 } },
         }}
