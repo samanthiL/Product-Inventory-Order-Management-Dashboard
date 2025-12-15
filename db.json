@@ -7,8 +7,8 @@
       "description": "13-inch premium ultrabook with Intel Core i7 processor.",
       "price": 1299.99,
       "category": "Laptop",
-      "stock": 19,
-      "isActive": false,
+      "stock": 0,
+      "isActive": true,
       "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed",
       "ratings": 4.7
     },
